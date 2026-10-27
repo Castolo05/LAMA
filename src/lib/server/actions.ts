@@ -163,3 +163,11 @@ export async function finishRoute(routeId: string, kmReal: number): Promise<Acti
   revalidatePath("/chofer");
   return { ok: true };
 }
+
+export async function resolveAlert(alertId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("maintenance_alerts").update({ resolved: true }).eq("id", alertId);
+  if (error) return fail(error);
+  revalidatePath("/flota");
+  return { ok: true };
+}

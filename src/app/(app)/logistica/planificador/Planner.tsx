@@ -10,7 +10,7 @@ import { formatARS, formatNumber, formatTime } from "@/lib/format";
 import { confirmRoutes } from "@/lib/server/actions";
 import { Button } from "@/components/ui/Button";
 import { Stat } from "@/components/ui/Stat";
-import { ROUTE_COLORS } from "@/components/maps/PlanMap";
+import { ROUTE_COLORS } from "@/components/maps/colors";
 
 const PlanMap = dynamic(() => import("@/components/maps/PlanMap"), { ssr: false, loading: () => <div className="h-[420px] animate-pulse rounded-xl bg-lama-cloud lg:h-[560px]" /> });
 
