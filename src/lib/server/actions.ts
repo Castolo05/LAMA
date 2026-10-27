@@ -171,3 +171,28 @@ export async function resolveAlert(alertId: string): Promise<ActionResult> {
   revalidatePath("/flota");
   return { ok: true };
 }
+
+export async function adminCreateUser(email: string, fullName: string, role: string, password: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_create_user", { p_email: email, p_full_name: fullName, p_role: role, p_password: password });
+  if (error) return fail(error);
+  revalidatePath("/admin/usuarios");
+  return { ok: true };
+}
+
+export async function adminUpdateUser(userId: string, role: string, active: boolean): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("admin_update_user", { p_user: userId, p_role: role, p_active: active });
+  if (error) return fail(error);
+  revalidatePath("/admin/usuarios");
+  return { ok: true };
+}
+
+export async function updateSetting(key: string, value: number): Promise<ActionResult> {
+  const supabase = await createClient();
+  if (!Number.isFinite(value) || value < 0) return { ok: false, error: "Ingresá un número válido." };
+  const { error } = await supabase.from("settings").update({ value }).eq("key", key);
+  if (error) return fail(error);
+  revalidatePath("/admin/parametros");
+  return { ok: true };
+}
