@@ -4,7 +4,6 @@ declare
   pw text := 'DemoLama2026!';
   s_coca uuid; s_lac uuid; s_chac uuid; s_frio uuid; s_secos uuid;
   c record; uid uuid; t record; i int;
-  sellers uuid[];
 begin
   perform setseed(0.42);
 
@@ -117,12 +116,9 @@ begin
     ('admin@demo.lama.com.ar','Soporte TI','admin'),
     ('direccion@demo.lama.com.ar','Ricardo Lama','direccion'),
     ('ventas@demo.lama.com.ar','Laura Pereyra','ventas'),
-    ('preventista@demo.lama.com.ar','Martín Godoy','preventista'),
-    ('preventista2@demo.lama.com.ar','Paula Ibarra','preventista'),
-    ('preventista3@demo.lama.com.ar','Federico Luna','preventista'),
     ('logistica@demo.lama.com.ar','Sergio Ramos','logistica'),
-    ('deposito@demo.lama.com.ar','Hugo Benítez','deposito'),
-    ('cobranzas@demo.lama.com.ar','Gabriela Sosa','cobranzas'),
+    ('deposito@demo.lama.com.ar','Hugo Benítez','logistica'),
+    ('cobranzas@demo.lama.com.ar','Gabriela Sosa','ventas'),
     ('chofer@demo.lama.com.ar','Carlos Medina','chofer'),
     ('proveedor@demo.lama.com.ar','Coca-Cola FEMSA (Mariana Vidal)','proveedor')) v(email, name, role)
   loop
@@ -132,7 +128,6 @@ begin
       supplier_id = case when c.role = 'proveedor' then s_coca end
     where id = uid;
   end loop;
-  select array_agg(id order by (email = 'preventista@demo.lama.com.ar') desc, email) into sellers from profiles where role = 'preventista';
 
   -- Comercios (zona centro, barrios y localidades satélite)
   for c in select row_number() over () as n, * from (values
@@ -191,12 +186,11 @@ begin
     ('Kiosco La Plaza Norte','kiosco','barrios','Gral. Paz 2100',-37.3080,-59.1405)
   ) v(name, kind, zone, address, lat, lng)
   loop
-    insert into customers (name, kind, address, lat, lng, zone, is_satellite, status, seller_id, payment_terms_days, phone, cuit, created_at)
+    insert into customers (name, kind, address, lat, lng, zone, is_satellite, status, payment_terms_days, phone, cuit, created_at)
     values (c.name, c.kind::customer_kind, c.address, c.lat, c.lng,
             c.zone,
             c.zone not in ('centro', 'barrios'),
             case when c.n in (51, 52, 53) then 'pendiente' else 'aprobado' end,
-            case when c.n in (51, 52, 53) then null else sellers[1 + (c.n % 3)] end,
             (array[7, 15, 15, 21, 30])[1 + (c.n % 5)],
             '249 4' || lpad((40000 + c.n * 137)::text, 5, '0'),
             '30-' || lpad((71000000 + c.n * 9137)::text, 8, '0') || '-' || (c.n % 9),
@@ -204,11 +198,7 @@ begin
   end loop;
   update customers set created_at = now() - interval '2 days' where status = 'pendiente';
 
-  -- Clientes demo
+  -- Cliente demo
   uid := create_auth_user('cliente@demo.lama.com.ar', pw, 'Tito Fernández');
   update profiles set customer_id = (select id from customers where name = 'Almacén Don Tito'), is_owner = true where id = uid;
-  uid := create_auth_user('cliente2@demo.lama.com.ar', pw, 'Mónica Ríos');
-  update profiles set customer_id = (select id from customers where name = 'Kiosco La Esquina'), is_owner = true where id = uid;
-  -- el preventista demo atiende a los dos clientes demo
-  update customers set seller_id = sellers[1] where name in ('Almacén Don Tito', 'Kiosco La Esquina');
 end $$;

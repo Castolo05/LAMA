@@ -3,13 +3,11 @@
 Plataforma web de **Lama Logística y Distribución S.R.L.** (Tandil). Una sola aplicación, con accesos por rol, que reúne:
 
 - **Portal de clientes**: catálogo con precios del día, pedidos, repetir último pedido, sugerencias de reposición, seguimiento del camión con hora estimada, reclamos y estado de cuenta.
-- **Preventa móvil**: el preventista toma pedidos de su cartera en el local del cliente.
-- **Ventas y atención**: aprobación de altas, reclamos, pedidos telefónicos, precios y promociones.
-- **Depósito**: preparación por zona (secos, frescos, frío) con registro de faltantes.
-- **Logística**: planificador de rutas (cadena de frío, capacidad, ventana del centro, agrupamiento de localidades) y tablero de rutas.
+- **Ventas, atención y cobranzas**: aprobación de altas, reclamos, pedidos telefónicos, precios y promociones, saldos por antigüedad y registro de pagos.
+- **Logística y depósito**: preparación por zona (secos, frescos, frío) con registro de faltantes, planificador de rutas (cadena de frío, capacidad, ventana del centro, agrupamiento de localidades) y tablero de rutas.
 - **Chofer**: hoja de ruta en el celular, confirmación de entregas y envases retornables.
 - **Flota**: telemetría y alertas de mantenimiento (simuladas para la demo).
-- **Tableros (BI)**: OTIF, costo por bulto, pedidos por canal, rentabilidad por cliente, desempeño por camión y preventista.
+- **Tableros (BI)**: OTIF, costo por bulto, pedidos por canal, rentabilidad por cliente, desempeño por camión.
 - **Portal de proveedores**: informes agregados de sus productos.
 - **Administración**: usuarios y roles, catálogo, parámetros y auditoría.
 
@@ -24,13 +22,9 @@ En `/ingresar` hay un botón por rol. Todas usan la contraseña `DemoLama2026!`:
 | Rol | Email |
 | --- | --- |
 | Cliente (Almacén Don Tito) | cliente@demo.lama.com.ar |
-| Cliente 2 (Kiosco La Esquina) | cliente2@demo.lama.com.ar |
-| Preventista | preventista@demo.lama.com.ar |
-| Ventas y atención | ventas@demo.lama.com.ar |
-| Depósito | deposito@demo.lama.com.ar |
-| Logística | logistica@demo.lama.com.ar |
+| Ventas, atención y cobranzas | ventas@demo.lama.com.ar |
+| Logística y depósito | logistica@demo.lama.com.ar |
 | Chofer | chofer@demo.lama.com.ar |
-| Cobranzas | cobranzas@demo.lama.com.ar |
 | Dirección | direccion@demo.lama.com.ar |
 | Proveedor (Coca-Cola FEMSA) | proveedor@demo.lama.com.ar |
 | Administrador | admin@demo.lama.com.ar |

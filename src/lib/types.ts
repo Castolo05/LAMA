@@ -2,16 +2,13 @@ export type Role =
   | "admin"
   | "direccion"
   | "ventas"
-  | "preventista"
   | "logistica"
-  | "deposito"
   | "chofer"
-  | "cobranzas"
   | "cliente"
   | "proveedor";
 
 export type OrderStatus = "recibido" | "en_preparacion" | "preparado" | "en_reparto" | "entregado" | "con_novedad" | "anulado";
-export type Channel = "portal" | "preventa" | "telefono";
+export type Channel = "portal" | "telefono";
 export type ProductLine = "coca_cola" | "secos" | "frescos" | "congelados";
 export type CustomerKind = "almacen" | "kiosco" | "gastronomico" | "supermercado";
 export type TicketKind = "rotura" | "faltante" | "demora" | "consulta" | "otro";
@@ -52,12 +49,9 @@ export type Promo = { product_id: string; pct: number; starts_on: string; ends_o
 export const ROLE_LABEL: Record<Role, string> = {
   admin: "Administrador",
   direccion: "Dirección",
-  ventas: "Ventas y atención",
-  preventista: "Preventista",
-  logistica: "Logística",
-  deposito: "Depósito",
+  ventas: "Ventas, atención y cobranzas",
+  logistica: "Logística y depósito",
   chofer: "Chofer",
-  cobranzas: "Cobranzas",
   cliente: "Cliente",
   proveedor: "Proveedor",
 };
@@ -79,4 +73,4 @@ export const LINE_LABEL: Record<ProductLine, string> = {
   congelados: "Congelados",
 };
 
-export const CHANNEL_LABEL: Record<Channel, string> = { portal: "Portal web", preventa: "Preventa", telefono: "Teléfono" };
+export const CHANNEL_LABEL: Record<Channel, string> = { portal: "Portal web", telefono: "Teléfono" };

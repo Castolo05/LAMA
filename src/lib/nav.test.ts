@@ -20,6 +20,12 @@ describe("navForRole", () => {
     expect(h).toEqual(expect.arrayContaining(["/bi", "/admin/auditoria"]));
     expect(h).not.toContain("/admin/usuarios");
   });
+  it("logística también prepara pedidos en depósito", () => {
+    expect(hrefs("logistica")).toEqual(expect.arrayContaining(["/deposito", "/logistica/planificador", "/logistica/rutas", "/flota"]));
+  });
+  it("ventas también atiende reclamos y gestiona cobranzas", () => {
+    expect(hrefs("ventas")).toEqual(expect.arrayContaining(["/ventas/clientes", "/ventas/reclamos", "/cobranzas"]));
+  });
   it("admin gestiona usuarios", () => {
     expect(hrefs("admin")).toContain("/admin/usuarios");
   });

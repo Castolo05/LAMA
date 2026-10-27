@@ -12,13 +12,13 @@ export const metadata = { title: "Clientes" };
 const KIND: Record<string, string> = { almacen: "Almacén", kiosco: "Kiosco", gastronomico: "Gastronómico", supermercado: "Autoservicio" };
 const STATUS_TONE = { aprobado: "ok", pendiente: "warn", rechazado: "dark" } as const;
 
-type Row = { id: string; name: string; kind: string; address: string; zone: string; status: keyof typeof STATUS_TONE; phone: string | null; cuit: string | null; created_at: string; seller: { full_name: string } | null };
+type Row = { id: string; name: string; kind: string; address: string; zone: string; status: keyof typeof STATUS_TONE; phone: string | null; cuit: string | null; created_at: string };
 
 export default async function ClientesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { profile } = await requireRole(null, "/ventas/clientes");
   const { q } = await searchParams;
   const supabase = await createClient();
-  let query = supabase.from("customers").select("id, name, kind, address, zone, status, phone, cuit, created_at, seller:profiles!customers_seller_id_fkey(full_name)").order("name");
+  let query = supabase.from("customers").select("id, name, kind, address, zone, status, phone, cuit, created_at").order("name");
   if (q) query = query.ilike("name", `%${q}%`);
   const { data } = await query.returns<Row[]>();
   const rows = data ?? [];
@@ -50,14 +50,13 @@ export default async function ClientesPage({ searchParams }: { searchParams: Pro
       </form>
       <Card>
         <Table>
-          <thead><tr><th>Comercio</th><th>Rubro</th><th>Zona</th><th>Preventista</th><th>Estado</th></tr></thead>
+          <thead><tr><th>Comercio</th><th>Rubro</th><th>Zona</th><th>Estado</th></tr></thead>
           <tbody>
             {rows.filter((r) => r.status !== "pendiente").map((c) => (
               <tr key={c.id}>
                 <td><p className="font-medium">{c.name}</p><p className="text-xs text-lama-steel">{c.address}</p></td>
                 <td>{KIND[c.kind]}</td>
                 <td className="capitalize">{c.zone}</td>
-                <td>{c.seller?.full_name ?? "—"}</td>
                 <td><Badge tone={STATUS_TONE[c.status]}>{c.status}</Badge></td>
               </tr>
             ))}

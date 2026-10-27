@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 
 type U = { id: string; full_name: string; email: string | null; role: Role; active: boolean; customers: { name: string } | null };
-const INTERNAL: Role[] = ["admin", "direccion", "ventas", "preventista", "logistica", "deposito", "cobranzas"];
+const INTERNAL: Role[] = ["admin", "direccion", "ventas", "logistica"];
 
 function Row({ u }: { u: U }) {
   const [role, setRole] = useState(u.role);

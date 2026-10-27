@@ -21,14 +21,14 @@ begin
     i := 0;
     for cu in
       select * from customers c
-      where c.status = 'aprobado' and not c.is_satellite and c.name not in ('Kiosco La Esquina')
+      where c.status = 'aprobado' and not c.is_satellite
         and (case when k = 1 then c.lat > -37.326 or c.name = 'Almacén Don Tito' else c.lat <= -37.326 and c.name <> 'Almacén Don Tito' end)
       order by random() limit 9
     loop
       i := i + 1;
       pend := case when i <= 3 then 0 else 1 end;  -- las primeras 3 paradas ya entregadas
       insert into orders (customer_id, channel, status, delivery_date, route_id, on_time, in_full, delivered_at, created_at)
-      values (cu.id, case when random() < 0.5 then 'portal' else 'preventa' end::order_channel,
+      values (cu.id, case when random() < 0.5 then 'portal' else 'telefono' end::order_channel,
               case when pend = 0 then 'entregado' else 'en_reparto' end::order_status, today, v_route,
               case when pend = 0 then true end, case when pend = 0 then true end,
               case when pend = 0 then today + time '08:00' + (i * 25 || ' minutes')::interval end,
@@ -62,7 +62,7 @@ begin
     i := i + 1;
     st := case when i <= 9 then 'recibido' when i <= 11 then 'en_preparacion' else 'preparado' end;
     insert into orders (customer_id, channel, status, delivery_date, created_at)
-    values (cu.id, (array['portal','portal','preventa','telefono'])[1 + floor(random() * 4)::int]::order_channel, st, tomorrow,
+    values (cu.id, (array['portal','portal','telefono'])[1 + floor(random() * 3)::int]::order_channel, st, tomorrow,
             now() - (random() * 300 || ' minutes')::interval)
     returning id into v_order;
     n_items := 3 + floor(random() * 5)::int;

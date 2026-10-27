@@ -18,7 +18,7 @@ export default async function PedidoTelefonicoPage({ searchParams }: { searchPar
   const catalog = selected ? await getCatalog() : null;
   return (
     <>
-      <PageHeader title="Pedido telefónico" description="Cargá el pedido de un cliente que llama. Entra al mismo circuito que los pedidos web y de preventa." />
+      <PageHeader title="Pedido telefónico" description="Cargá el pedido de un cliente que llama. Entra al mismo circuito que los pedidos web." />
       {pedido && (
         <p className="mb-4 flex items-center gap-2 rounded-xl bg-ok-soft px-4 py-3 text-sm font-medium text-ok">
           <CheckCircle2 className="h-5 w-5" /> Pedido cargado. <Link href={`/pedidos/${pedido}`} className="underline">Ver pedido</Link>

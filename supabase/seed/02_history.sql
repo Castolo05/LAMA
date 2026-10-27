@@ -32,9 +32,7 @@ begin
         continue when random() >= p_order;
 
         r := random();
-        ch := case when r < 0.05 + 0.40 * prog then 'portal'
-                   when r < 0.05 + 0.40 * prog + (0.95 - 0.40 * prog) * 0.7 then 'preventa'
-                   else 'telefono' end;
+        ch := case when r < 0.05 + 0.40 * prog then 'portal' else 'telefono' end;
         v_created := (d - case when extract(isodow from d) = 1 then 2 else 1 end) + time '08:00' + (random() * 540 || ' minutes')::interval;
         t := case when cu.is_satellite then 2 else 1 + (cu.idx % 5)::int end;
         if t = 2 and not cu.is_satellite then t := 6; end if;

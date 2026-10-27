@@ -15,7 +15,7 @@ export default async function PreciosPage() {
   ]);
   return (
     <>
-      <PageHeader title="Precios y promociones" description="Los cambios se ven al instante en el portal y en la preventa. Cada cambio de precio queda en la auditoría." />
+      <PageHeader title="Precios y promociones" description="Los cambios se ven al instante en el portal y en los pedidos telefónicos. Cada cambio de precio queda en la auditoría." />
       <PriceEditor products={products ?? []} promos={promos ?? []} today={todayBA()} />
     </>
   );

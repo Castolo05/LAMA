@@ -14,7 +14,7 @@ type O = {
 };
 
 export default async function PrepararPage({ params }: { params: Promise<{ pedidoId: string }> }) {
-  await requireRole(["deposito", "admin"], "/deposito");
+  await requireRole(["logistica", "admin"], "/deposito");
   const { pedidoId } = await params;
   const supabase = await createClient();
   const { data: o } = await supabase

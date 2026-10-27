@@ -20,7 +20,7 @@ type Row = {
 };
 
 export default async function DepositoPage() {
-  await requireRole(["deposito", "admin"], "/deposito");
+  await requireRole(["logistica", "admin"], "/deposito");
   const supabase = await createClient();
   const [{ data }, { count: prepared }] = await Promise.all([
     supabase
@@ -48,7 +48,7 @@ export default async function DepositoPage() {
         <Stat label="Preparados sin ruta" value={String(prepared ?? 0)} delta="Listos para el planificador" />
       </div>
       {rows.length === 0 ? (
-        <EmptyState title="No hay pedidos pendientes" description="Los pedidos nuevos del portal, la preventa y el teléfono aparecen acá." />
+        <EmptyState title="No hay pedidos pendientes" description="Los pedidos nuevos del portal y del teléfono aparecen acá." />
       ) : (
         [...groups.entries()].map(([date, list]) => (
           <section key={date} className="mb-8">

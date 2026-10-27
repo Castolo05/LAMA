@@ -96,7 +96,7 @@ export default async function Home() {
             ["Quiénes somos.", "Lama Logística y Distribución S.R.L., una empresa tandilense con flota propia de camiones de corto y mediano alcance, cámara de frío y depósito para secos y frescos en Figueroa 651."],
             ["Qué llevamos.", "La línea completa de The Coca-Cola Company (gaseosas, Cepita, Bonaqua, Kin, Monster), alimentos secos de góndola, lácteos, quesos y fiambres de la zona y congelados para gastronomía."],
             ["Dónde repartimos.", "Todo el partido de Tandil de lunes a sábado y las localidades de la región centro (Gardey, María Ignacia, Barker, De la Canal, Azucena y Fulton) en viajes programados."],
-            ["Cómo pedir.", "Desde la web, con tu preventista cuando visita el local o por teléfono al (0249) 444-5001. Los tres caminos entran al mismo pedido y lo seguís desde tu cuenta."],
+            ["Cómo pedir.", "Desde la web o por teléfono al (0249) 444-5001. Los dos caminos entran al mismo pedido y lo seguís desde tu cuenta."],
           ].map(([lead, text], i) => (
             <p key={lead} data-reveal style={{ transitionDelay: `${i * 80}ms` }} className="text-[15px] leading-[1.5] text-lama-steel">
               <strong className="font-semibold text-lama-ink">{lead}</strong> {text}

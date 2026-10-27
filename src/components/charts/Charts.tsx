@@ -3,8 +3,8 @@
 import { formatARS, formatNumber, formatPct } from "@/lib/format";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-// Paleta validada (scripts/validate_palette.js, modo claro): portal, preventa, teléfono
-export const CHANNEL_COLORS = { portal: "#DA2128", preventa: "#3B5BA9", telefono: "#D08A12" } as const;
+// Paleta validada (scripts/validate_palette.js, modo claro): portal, teléfono
+export const CHANNEL_COLORS = { portal: "#DA2128", telefono: "#D08A12" } as const;
 const INK = "#1A1A1A";
 const GRID = "#E3E5E9";
 const AXIS = { fontSize: 12, fill: "#7A7A7A" };
@@ -32,7 +32,7 @@ export function KpiLine({ data, dataKey, label, kind }: { data: Record<string, n
   );
 }
 
-export function ChannelStack({ data }: { data: { label: string; portal: number; preventa: number; telefono: number }[] }) {
+export function ChannelStack({ data }: { data: { label: string; portal: number; telefono: number }[] }) {
   const pct = (n: number) => `${Math.round(n * 100)} %`;
   return (
     <ResponsiveContainer width="100%" height={240}>
@@ -43,7 +43,6 @@ export function ChannelStack({ data }: { data: { label: string; portal: number; 
         <Tooltip contentStyle={tooltipStyle} formatter={(v, n) => [pct(Number(v)), n]} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
         <Legend iconType="square" wrapperStyle={{ fontSize: 13, color: INK }} />
         <Bar dataKey="portal" name="Portal web" stackId="c" fill={CHANNEL_COLORS.portal} stroke="#fff" strokeWidth={2} />
-        <Bar dataKey="preventa" name="Preventa" stackId="c" fill={CHANNEL_COLORS.preventa} stroke="#fff" strokeWidth={2} />
         <Bar dataKey="telefono" name="Teléfono" stackId="c" fill={CHANNEL_COLORS.telefono} stroke="#fff" strokeWidth={2} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>

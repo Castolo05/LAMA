@@ -5,7 +5,7 @@ import { CartView } from "@/components/cart/CartView";
 import { ProductCatalog } from "@/components/catalog/ProductCatalog";
 import type { Channel, Product, Promo } from "@/lib/types";
 
-/** Catálogo + carrito para cargar un pedido en nombre de un cliente (preventa o teléfono). */
+/** Catálogo + carrito para cargar un pedido en nombre de un cliente (pedido telefónico). */
 export function OrderBuilder(props: { storageKey: string; products: Product[]; promos: Promo[]; today: string; customerId: string; channel: Channel; afterHref: string }) {
   const { storageKey, afterHref, ...rest } = props;
   return (

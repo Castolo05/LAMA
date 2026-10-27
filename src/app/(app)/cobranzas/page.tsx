@@ -10,7 +10,7 @@ import { PaymentForm } from "./PaymentForm";
 
 export const metadata = { title: "Cobranzas" };
 
-type B = { customer_id: string; name: string; seller: string | null; payment_terms_days: number; corriente: number; d1_30: number; d31_60: number; d60_mas: number; total: number; last_payment: string | null };
+type B = { customer_id: string; name: string; payment_terms_days: number; corriente: number; d1_30: number; d31_60: number; d60_mas: number; total: number; last_payment: string | null };
 
 export default async function CobranzasPage() {
   const { profile } = await requireRole(null, "/cobranzas");
@@ -18,7 +18,7 @@ export default async function CobranzasPage() {
   const { data } = await supabase.rpc("customer_balances");
   const rows = ((data ?? []) as B[]).map((r) => ({ ...r, vencido: Number(r.d1_30) + Number(r.d31_60) + Number(r.d60_mas) })).sort((a, b) => b.vencido - a.vencido || Number(b.total) - Number(a.total));
   const sum = (k: keyof B | "vencido") => rows.reduce((s, r) => s + Number((r as Record<string, unknown>)[k] ?? 0), 0);
-  const canRegister = ["cobranzas", "admin"].includes(profile.role);
+  const canRegister = ["ventas", "admin"].includes(profile.role);
   return (
     <>
       <PageHeader title="Cobranzas" description="Saldo de cada comercio por antigüedad de vencimiento. Los pagos se aplican a las facturas más viejas primero." />
@@ -36,7 +36,7 @@ export default async function CobranzasPage() {
             <tbody>
               {rows.filter((r) => Number(r.total) > 0).map((r) => (
                 <tr key={r.customer_id}>
-                  <td><p className="font-medium">{r.name}</p><p className="text-xs text-lama-steel">{r.seller ?? "Sin preventista"} · {r.payment_terms_days} días</p></td>
+                  <td><p className="font-medium">{r.name}</p><p className="text-xs text-lama-steel">Plazo {r.payment_terms_days} días</p></td>
                   <td className="text-right tabular-nums whitespace-nowrap">{formatARS(Number(r.corriente))}</td>
                   <td className="text-right tabular-nums whitespace-nowrap">{Number(r.d1_30) ? formatARS(Number(r.d1_30)) : "—"}</td>
                   <td className="text-right tabular-nums whitespace-nowrap text-warn">{Number(r.d31_60) ? formatARS(Number(r.d31_60)) : "—"}</td>

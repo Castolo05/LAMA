@@ -1,7 +1,7 @@
 import type { Role } from "./types";
 
 export type NavIcon =
-  | "home" | "catalog" | "cart" | "orders" | "tickets" | "account" | "store" | "presale" | "customers" | "phone"
+  | "home" | "catalog" | "cart" | "orders" | "tickets" | "account" | "store" | "customers" | "phone"
   | "prices" | "warehouse" | "planner" | "routes" | "fleet" | "driver" | "collections" | "bi" | "supplier"
   | "users" | "settings" | "audit";
 
@@ -15,7 +15,6 @@ const I = {
   reclamos: { href: "/reclamos", label: "Reclamos", icon: "tickets" },
   cuenta: { href: "/cuenta", label: "Cuenta", icon: "account" },
   miComercio: { href: "/mi-comercio", label: "Mi comercio", icon: "store" },
-  preventa: { href: "/preventa", label: "Mis clientes", icon: "presale" },
   ventasClientes: { href: "/ventas/clientes", label: "Clientes", icon: "customers" },
   ventasReclamos: { href: "/ventas/reclamos", label: "Reclamos", icon: "tickets" },
   ventasTel: { href: "/ventas/pedido-telefonico", label: "Pedido telefónico", icon: "phone" },
@@ -36,12 +35,9 @@ const I = {
 
 const NAV: Record<Role, NavItem[]> = {
   cliente: [I.inicio, I.catalogo, I.carrito, I.pedidos, I.reclamos, I.cuenta, I.miComercio],
-  preventista: [I.preventa, I.catalogo],
-  ventas: [I.pedidos, I.ventasClientes, I.ventasReclamos, I.ventasTel, I.ventasPrecios, I.bi],
-  logistica: [I.planificador, I.rutas, I.flota, I.bi],
-  deposito: [I.deposito],
+  ventas: [I.pedidos, I.ventasClientes, I.ventasReclamos, I.ventasTel, I.ventasPrecios, I.cobranzas, I.bi],
+  logistica: [I.deposito, I.planificador, I.rutas, I.flota, I.bi],
   chofer: [I.chofer],
-  cobranzas: [I.cobranzas, I.bi],
   direccion: [I.bi, I.pedidos, I.ventasClientes, I.rutas, I.flota, I.cobranzas, I.auditoria],
   proveedor: [I.proveedor],
   admin: [I.bi, I.pedidos, I.ventasClientes, I.ventasReclamos, I.deposito, I.planificador, I.rutas, I.flota, I.cobranzas,
