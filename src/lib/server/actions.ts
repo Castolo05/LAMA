@@ -146,3 +146,20 @@ export async function startRoute(routeId: string): Promise<ActionResult> {
   revalidatePath("/chofer");
   return { ok: true };
 }
+
+export async function deliverStop(stopId: string, items: { item_id: string; qty_delivered: number }[], returnables: { kind: string; qty: number }[], note: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("deliver_stop", { p_stop: stopId, p_items: items, p_returnables: returnables, p_note: note });
+  if (error) return fail(error);
+  revalidatePath("/chofer");
+  return { ok: true };
+}
+
+export async function finishRoute(routeId: string, kmReal: number): Promise<ActionResult> {
+  const supabase = await createClient();
+  if (!(kmReal > 0)) return { ok: false, error: "Ingresá los kilómetros recorridos." };
+  const { error } = await supabase.rpc("finish_route", { p_route: routeId, p_km_real: kmReal });
+  if (error) return fail(error);
+  revalidatePath("/chofer");
+  return { ok: true };
+}
