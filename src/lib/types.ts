@@ -40,6 +40,7 @@ export type Product = {
   volume_m3: number;
   unit: string;
   low_sugar: boolean;
+  image_url: string | null;
   active: boolean;
   categories?: { name: string; line: ProductLine } | null;
 };

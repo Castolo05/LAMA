@@ -58,3 +58,5 @@ npm test
 ## Fotografías
 
 Imágenes de colecciones abiertas, con su crédito en el pie de la página de inicio (detalle en `docs/photo-credits.json`).
+
+Las fotos de productos (`public/products/`, una por SKU vía `products.image_url`) son de Wikimedia Commons; autor y licencia de cada una en `/creditos` (datos en `src/lib/product-photo-credits.json`).

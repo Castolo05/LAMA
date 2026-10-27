@@ -261,7 +261,7 @@ export default async function Home() {
           </p>
         </div>
       </footer>
-      <p className="px-3 py-4 text-[13px] text-lama-steel">Fotografías: {CREDITS.join(" · ")}.</p>
+      <p className="px-3 py-4 text-[13px] text-lama-steel">Fotografías: {CREDITS.join(" · ")}. <Link href="/creditos" className="underline hover:text-lama-red">Fotos de productos</Link>.</p>
     </div>
   );
 }
