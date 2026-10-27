@@ -128,3 +128,21 @@ export async function prepareOrder(orderId: string, prepared: { item_id: string;
   revalidatePath("/deposito");
   return { ok: true };
 }
+
+export async function confirmRoutes(date: string, plan: { truck_id: string; driver_id: string; km: number; cost: number; stops: { order_id: string; seq: number; eta: string }[] }[]): Promise<ActionResult<number>> {
+  const supabase = await createClient();
+  if (plan.some((r) => !r.driver_id)) return { ok: false, error: "Asigná un chofer a cada camión antes de confirmar." };
+  const { data, error } = await supabase.rpc("confirm_routes", { p_date: date, p_plan: plan });
+  if (error) return fail(error);
+  revalidatePath("/logistica/rutas");
+  return { ok: true, data: data as number };
+}
+
+export async function startRoute(routeId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("start_route", { p_route: routeId });
+  if (error) return fail(error);
+  revalidatePath("/logistica/rutas");
+  revalidatePath("/chofer");
+  return { ok: true };
+}
