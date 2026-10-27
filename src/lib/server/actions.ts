@@ -66,3 +66,49 @@ export async function addEmployee(email: string, fullName: string, password: str
   revalidatePath("/mi-comercio");
   return { ok: true };
 }
+
+export async function approveCustomer(customerId: string, approve: boolean): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("approve_customer", { p_customer: customerId, p_approve: approve });
+  if (error) return fail(error);
+  revalidatePath("/ventas/clientes");
+  return { ok: true };
+}
+
+export async function updateProduct(productId: string, patch: { price?: number; stock?: number; active?: boolean }): Promise<ActionResult> {
+  const supabase = await createClient();
+  if (patch.price !== undefined && (!Number.isFinite(patch.price) || patch.price <= 0)) return { ok: false, error: "Ingresá un precio mayor a cero." };
+  if (patch.stock !== undefined && (!Number.isInteger(patch.stock) || patch.stock < 0)) return { ok: false, error: "El stock debe ser un número entero positivo." };
+  const { error } = await supabase.from("products").update(patch).eq("id", productId);
+  if (error) return fail(error);
+  revalidatePath("/ventas/precios");
+  revalidatePath("/admin/catalogo");
+  return { ok: true };
+}
+
+export async function createPromotion(productId: string, pct: number, startsOn: string, endsOn: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  if (!(pct > 0 && pct < 100)) return { ok: false, error: "El descuento debe estar entre 1 % y 99 %." };
+  if (!startsOn || !endsOn || endsOn < startsOn) return { ok: false, error: "Revisá las fechas de la promoción." };
+  const { error } = await supabase.from("promotions").insert({ product_id: productId, pct, starts_on: startsOn, ends_on: endsOn });
+  if (error) return fail(error);
+  revalidatePath("/ventas/precios");
+  return { ok: true };
+}
+
+export async function deletePromotion(promoId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.from("promotions").delete().eq("id", promoId);
+  if (error) return fail(error);
+  revalidatePath("/ventas/precios");
+  return { ok: true };
+}
+
+export async function registerPayment(customerId: string, amount: number, paidOn: string, method: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  if (!(amount > 0)) return { ok: false, error: "Ingresá un importe mayor a cero." };
+  const { error } = await supabase.from("payments").insert({ customer_id: customerId, amount, paid_on: paidOn, method });
+  if (error) return fail(error);
+  revalidatePath("/cobranzas");
+  return { ok: true };
+}

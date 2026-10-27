@@ -134,3 +134,8 @@ begin
 end $$;
 
 -- demo_shift_dates() y el cron diario están en supabase/migrations/0004_demo_shift.sql
+
+-- Ajuste aplicado tras la carga: comercios que quedaron sin pagos en la historia
+insert into payments (customer_id, amount, paid_on, method)
+select i.customer_id, i.amount, i.due_on + 3, 'transferencia' from invoices i join customers c on c.id = i.customer_id
+where (c.name = 'Almacén Doña Elsa' and i.due_on < current_date - 40) or (c.name = 'Almacén Fulton' and i.due_on < current_date - 5);
