@@ -112,3 +112,19 @@ export async function registerPayment(customerId: string, amount: number, paidOn
   revalidatePath("/cobranzas");
   return { ok: true };
 }
+
+export async function startPreparing(orderId: string): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("start_preparing", { p_order: orderId });
+  if (error) return fail(error);
+  revalidatePath("/deposito");
+  return { ok: true };
+}
+
+export async function prepareOrder(orderId: string, prepared: { item_id: string; qty_prepared: number }[]): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("prepare_order", { p_order: orderId, p_prepared: prepared });
+  if (error) return fail(error);
+  revalidatePath("/deposito");
+  return { ok: true };
+}
