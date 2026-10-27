@@ -13,6 +13,8 @@ Plataforma web de **Lama Logística y Distribución S.R.L.** (Tandil). Una sola 
 - **Portal de proveedores**: informes agregados de sus productos.
 - **Administración**: usuarios y roles, catálogo, parámetros y auditoría.
 
+**Sitio publicado:** https://lama-logistica.vercel.app
+
 Proyecto de Grupo Nodo Sur (Transformación Digital). Diseño en `docs/superpowers/specs/`, plan en `docs/superpowers/plans/`, contexto y marca en `docs/`.
 
 ## Cuentas de demostración
