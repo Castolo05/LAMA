@@ -69,3 +69,28 @@ h3,
   font-family: var(--font-sans);
   z-index: 0;
 }
+
+/* Landing: movimiento */
+@keyframes shutter {
+  from { clip-path: inset(0 0 0 100%); transform: scale(1.12); }
+  to { clip-path: inset(0 0 0 0); transform: scale(1); }
+}
+.shutter { animation: shutter 1.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+.reveal-ready [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal-ready [data-reveal].is-in { opacity: 1; transform: none; }
+
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee { animation: marquee 60s linear infinite; }
+
+@keyframes truck-drive {
+  0%, 10% { transform: translate(118px, 158px); }
+  45%, 55% { transform: translate(198px, 98px); }
+  90%, 100% { transform: translate(278px, 38px); }
+}
+.truck-drive { animation: truck-drive 9s ease-in-out infinite alternate; }
+
+@media (prefers-reduced-motion: reduce) {
+  .shutter, .marquee, .truck-drive { animation: none; }
+  .reveal-ready [data-reveal] { opacity: 1; transform: none; }
+}
