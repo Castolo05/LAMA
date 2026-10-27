@@ -3,15 +3,15 @@ import { cn } from "@/lib/cn";
 const base =
   "w-full rounded-[10px] border border-lama-line bg-white px-3 py-2.5 text-sm text-lama-ink placeholder:text-lama-steel focus:border-lama-ink focus:outline-none";
 
-export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
+export function Input({ className, ...props }: React.ComponentProps<"input">) {
   return <input className={cn(base, className)} {...props} />;
 }
 
-export function Select({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({ className, ...props }: React.ComponentProps<"select">) {
   return <select className={cn(base, "pr-8", className)} {...props} />;
 }
 
-export function Textarea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return <textarea className={cn(base, "min-h-24", className)} {...props} />;
 }
 

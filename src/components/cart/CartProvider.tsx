@@ -28,36 +28,46 @@ function read(key: string): CartLine[] {
 
 export function CartProvider({ storageKey, children }: { storageKey: string; children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => setLines(read(storageKey)), [storageKey]);
+  useEffect(() => {
+    setLines(read(storageKey));
+    setLoaded(true);
+  }, [storageKey]);
 
-  const persist = useCallback(
-    (next: CartLine[]) => {
-      setLines(next);
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(next));
-      } catch {
-        // almacenamiento no disponible: el carrito vive solo en memoria
-      }
-    },
-    [storageKey],
-  );
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(lines));
+    } catch {
+      // almacenamiento no disponible: el carrito vive solo en memoria
+    }
+  }, [lines, loaded, storageKey]);
 
-  const value = useMemo<CartCtx>(() => {
-    const setQty = (productId: string, qty: number) => {
-      const rest = lines.filter((l) => l.productId !== productId);
-      persist(qty > 0 ? [...rest, { productId, qty }] : rest);
-    };
-    return {
+  const setQty = useCallback((productId: string, qty: number) => {
+    setLines((prev) => {
+      const rest = prev.filter((l) => l.productId !== productId);
+      return qty > 0 ? [...rest, { productId, qty }] : rest;
+    });
+  }, []);
+
+  const value = useMemo<CartCtx>(
+    () => ({
       lines,
       count: lines.reduce((s, l) => s + l.qty, 0),
       qtyOf: (id) => lines.find((l) => l.productId === id)?.qty ?? 0,
       setQty,
-      add: (id, qty = 1) => setQty(id, (lines.find((l) => l.productId === id)?.qty ?? 0) + qty),
-      replace: (next) => persist(next.filter((l) => l.qty > 0)),
-      clear: () => persist([]),
-    };
-  }, [lines, persist]);
+      add: (id, qty = 1) =>
+        setLines((prev) => {
+          const cur = prev.find((l) => l.productId === id)?.qty ?? 0;
+          const rest = prev.filter((l) => l.productId !== id);
+          return cur + qty > 0 ? [...rest, { productId: id, qty: cur + qty }] : rest;
+        }),
+      replace: (next) => setLines(next.filter((l) => l.qty > 0)),
+      clear: () => setLines([]),
+    }),
+    [lines, setQty],
+  );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

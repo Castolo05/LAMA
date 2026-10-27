@@ -82,7 +82,9 @@ begin
 
   -- Don Tito: pedidos históricos por portal (para "repetir último pedido" y sugerencias) y deuda reciente sin pagar
   update orders set channel = 'portal' where customer_id = tito and delivery_date > today - 60;
-  delete from payments where customer_id = tito and paid_on > today - 12;
+  delete from payments where customer_id = tito;
+  insert into payments (customer_id, amount, paid_on, method)
+  select customer_id, amount, due_on - 2, 'transferencia' from invoices where customer_id = tito and due_on < today - 10;
 
   -- Reclamos y consultas
   select id into staff from profiles where email = 'ventas@demo.lama.com.ar';
