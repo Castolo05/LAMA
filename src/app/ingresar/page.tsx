@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Logo } from "@/components/brand/Logo";
+import { Select } from "@/components/ui/Input";
 import { DEMO_ACCOUNTS } from "@/lib/demo";
 import { demoLogin } from "./actions";
 import { DemoButton } from "./DemoButton";
@@ -30,7 +31,7 @@ export default function IngresarPage() {
       <section className="flex flex-col justify-center px-4 py-10 sm:px-10">
         <div className="mx-auto w-full max-w-md">
           <Link href="/" aria-label="Inicio">
-            <Logo className="h-12 w-auto" />
+            <Logo className="h-20 w-auto sm:h-24" />
           </Link>
           <h1 className="energetic mt-8 text-3xl">Ingresar</h1>
           <p className="mt-1 text-sm text-lama-steel">
@@ -45,15 +46,17 @@ export default function IngresarPage() {
 
           <div className="mt-10 rounded-xl border border-lama-line bg-lama-cloud p-4">
             <h2 className="text-sm font-bold">Cuentas de demostración</h2>
-            <p className="mt-0.5 text-xs text-lama-steel">Entrá con un clic para ver la plataforma desde cada rol.</p>
-            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              {DEMO_ACCOUNTS.map((a) => (
-                <form key={a.email} action={demoLogin}>
-                  <input type="hidden" name="email" value={a.email} />
-                  <DemoButton label={a.label} person={a.person} />
-                </form>
-              ))}
-            </div>
+            <p className="mt-0.5 text-xs text-lama-steel">Elegí un rol para ver la plataforma desde su perspectiva.</p>
+            <form action={demoLogin} className="mt-3 flex gap-2">
+              <Select name="email" aria-label="Cuenta de demostración" defaultValue={DEMO_ACCOUNTS[0].email}>
+                {DEMO_ACCOUNTS.map((a) => (
+                  <option key={a.email} value={a.email}>
+                    {a.label} — {a.person}
+                  </option>
+                ))}
+              </Select>
+              <DemoButton />
+            </form>
           </div>
         </div>
       </section>
